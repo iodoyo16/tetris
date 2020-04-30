@@ -158,8 +158,8 @@ void DrawNextBlock(int *nextBlock){
 
 void DrawBlock(int y, int x, int blockID,int blockRotate,char tile){
 	int i,j;
-	for(i=0;i<4;i++)
-		for(j=0;j<4;j++){
+	for(i=0;i<BLOCK_HEIGHT;i++)
+		for(j=0;j<BLOCK_WIDTH;j++){
 			if(block[blockID][blockRotate][i][j]==1 && i+y>=0){
 				move(i+y+1,j+x+1);
 				attron(A_REVERSE);
@@ -294,17 +294,17 @@ void BlockDown(int sig){
 	else {
 		AddBlockToField(field, nextBlock[0], blockRotate, blockY, blockX);
 		score += DeleteLine(field);
+		PrintScore(score);
 		nextBlock[0] = nextBlock[1];
-		nextBlock[1] = rand() % 7;
+		nextBlock[1] = rand() % 7;//7가지 도형중 하나 랜덤
 
 		if (blockY == -1)gameOver = 1;
 
-		blockRotate == 0;
+		blockRotate == 0;//초기화
 		blockY = -1;
 		blockX = (WIDTH / 2)-2;
 
 		DrawNextBlock(nextBlock);
-		PrintScore(score);
 		DrawField();
 	}
 	timed_out = 0;
@@ -333,9 +333,8 @@ int DeleteLine(char f[HEIGHT][WIDTH]){
 			count++;
 			for (k = i; k > 0; k--){
 				for (l = 0; l < WIDTH; l++)
-					f[k][l] = f[k - 1][l];
+					f[k][l] = f[k - 1][l];//한줄씩 내린다
 			}
-			j--;//줄이 내려왔으니 다시 체크
 		}
 	}
 	return count * count * 100;
